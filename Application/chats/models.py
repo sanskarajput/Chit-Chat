@@ -7,6 +7,11 @@ class Conversation(models.Model):
     user2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='conversation_s_user_2')   
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user1', 'user2'], name='unique_conversation_users')  # Ensuring that only unique conversations are created between two users.
+        ]
+
     def __str__(self):
         return f'Conversation between {self.user1.username} and {self.user2.username}'
 
