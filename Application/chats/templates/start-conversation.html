@@ -1,5 +1,55 @@
 {% extends "main-content.html" %}
 
 {% block content %}
-    Start - Conversation Page
+<link rel="stylesheet" href="static/css/chat-box.css">
+
+
+<main class="main-content">
+    <div class="chat-container">
+        <!-- Header -->
+        <div class="chat-header">
+            <div class="user-profile">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Profile" class="avatar">
+                <div class="user-info">
+                    <h3>John Doe</h3>
+                    <span class="status online">Online</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="search-btn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <button class="menu-btn">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Messages -->
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will be dynamically added here -->
+        </div>
+
+        <!-- Chat Input -->
+        <div class="chat-input">
+            <button class="emoji-btn" id="emojiBtn">
+                <i class="far fa-smile"></i>
+            </button>
+            <input type="text" id="messageInput" placeholder="Type a message...">
+            <button class="attach-btn">
+                <i class="fas fa-paperclip"></i>
+            </button>
+            <button class="send-btn" id="sendBtn">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</main>
+
+{% comment %} <script src="/static/js/chat-box.js"></script> {% endcomment %}
+<script>
+    const current_user = "{{ current_user }}";
+</script>
+<script src="/static/js/webSocket.js"></script>
+
 {% endblock content %}

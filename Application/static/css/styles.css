@@ -10,6 +10,11 @@
     --nav-gradient: linear-gradient(35deg, #aa0ee8, #8d52f2);
     --card-shadow: 0 4px 12px rgba(0,0,0,0.05);
     --transition: all 0.3s ease;
+    --message-sent-bg: var(--primary-color);
+    --message-received-bg: var(--hover-color);
+    --scrollbar-track: #f1f1f1;
+    --scrollbar-thumb: var(--primary-color);
+    --scrollbar-thumb-hover: var(--secondary-color);
 }
 
 [data-theme="dark"] {
@@ -24,6 +29,11 @@
     --nav-gradient: linear-gradient(35deg, #984af7, #7d3bf0);
     /* --nav-gradient: linear-gradient(135deg, #1e40af, #4f46e5); */
     --card-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    --message-sent-bg: var(--primary-color);
+    --message-received-bg: var(--card-background);
+    --scrollbar-track: #2d3748;
+    --scrollbar-thumb: var(--primary-color);
+    --scrollbar-thumb-hover: var(--secondary-color);
 }
 
 * {
@@ -132,7 +142,7 @@ body {
 .container {
     display: flex;
     margin-top: 70px;
-    min-height: calc(100vh - 130px);
+    max-height: calc(100vh - 70px);
     gap: 1.5rem;
     padding: 1.5rem;
     position: relative;
@@ -141,7 +151,7 @@ body {
 
 /* Left Menu */
 .left-menu {
-    width: 250px;
+    width: 300px;
     background: var(--card-background);
     padding: 1.5rem;
     border-radius: 16px;
@@ -176,7 +186,7 @@ body {
     flex: 1;
     background: var(--card-background);
     border-radius: 16px;
-    padding: 2rem;
+    padding: 1rem;
     box-shadow: var(--card-shadow);
     transition: var(--transition);
 }
