@@ -1,9 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.querySelector('.menu-toggle');
+    const inputBox = document.querySelector('input');
     const leftMenu = document.querySelector('.left-menu');
     const navLinks = document.querySelector('.nav-links');
     const themeToggle = document.querySelector('.theme-toggle');
     const body = document.body;
+    
   
     // Menu Toggle
     menuToggle.addEventListener('click', () => {
@@ -49,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
   
-    // Handle window resize
+    // Handle window resize 
     let resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
@@ -81,4 +83,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // filter functionality
+    inputBox.addEventListener("input", (e) => {
+        const searchQuery = e.target.value.toLowerCase();
+        const all_lis = leftMenu.querySelectorAll("li");
+        all_lis.forEach((li) => {
+            const text = li.textContent.toLowerCase();
+            if (text.includes(searchQuery)) {
+                li.style.display = "inline";
+            } else {
+                li.style.display = "none";
+            }
+        })
+        
+    })
   });
+
+

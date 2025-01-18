@@ -1,4 +1,4 @@
-import json
+import json, time
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from django.contrib.auth.models import User
@@ -9,10 +9,12 @@ class ChatConsumer(WebsocketConsumer):
         self.my_id = self.scope['url_route']['kwargs']['my_id']
         self.other_id = self.scope['url_route']['kwargs']['other_id']
 
+        created = False
         try:
             # Fetch the users
             user1 = User.objects.get(id=self.my_id)
             user2 = User.objects.get(id=self.other_id)
+            other_user = user2
 
             # Ensure the user IDs are always in a consistent order
             if user1.id > user2.id:
@@ -24,9 +26,8 @@ class ChatConsumer(WebsocketConsumer):
                 user2=user2
             )
 
-            # If a new conversation was created, log it (optional)
-            if created:
-                print(f"New conversation created between {user1.username} and {user2.username}")
+            # if created:
+            #     print(f"New conversation created between {user1.username} and {user2.username}")
 
         except User.DoesNotExist:
             # Close the WebSocket if any user does not exist
@@ -43,6 +44,18 @@ class ChatConsumer(WebsocketConsumer):
         )
 
         self.accept()
+        if created:
+            self.send(text_data=json.dumps({
+                'type': 'conversation_created',
+                'message': f'You have created a new conversation with {other_user.username}'
+            }))
+            time.sleep(.5)
+        self.send(text_data=json.dumps({
+            'type': 'join_group',
+            'message': f'You have joined the conversation with {other_user.username}'
+        }))
+        time.sleep(.5)
+        self.send_previous_messages()
 
 
     def disconnect(self, close_code):
@@ -76,7 +89,7 @@ class ChatConsumer(WebsocketConsumer):
                 {
                     'type': 'chat_message',
                     'message': {
-                        'sender': sender.username,
+                        'sender': sender.id,
                         'content': message.content,
                         'timestamp': message.timestamp.isoformat(),
                     }
@@ -90,3 +103,18 @@ class ChatConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps({
             'message': event['message']
         }))
+
+    def send_previous_messages(self):
+        # Fetch the previous messages and send them to the WebSocket
+        messages = Message.objects.filter(conversation=self.conversation).order_by('timestamp')
+        for message in messages:
+            self.send(text_data=json.dumps({
+                'type': 'previous_messages',
+                'message': {
+                    'sender': message.sender.id,
+                    'content': message.content,
+                    'timestamp': message.timestamp.isoformat(),
+                }
+            }))
+
+

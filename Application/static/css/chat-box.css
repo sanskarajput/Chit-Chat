@@ -60,17 +60,17 @@
 }
 
 .header-actions button {
-    font-size: 22px;
+    font-size: 14px;
     color: white;
     opacity: 0.8;
     transition: var(--transition);
     background-color: var(--nav-gradient);
     border: none;
-
 }
 
 .header-actions button:hover {
     opacity: 1;
+    cursor: pointer;
 }
 
 /* Chat Messages */
@@ -87,7 +87,7 @@
 /* Custom Scrollbar */
 
 .chat-messages::-webkit-scrollbar {
-    width: 9px;
+    width: 8px;
     transition: width 0.3s ease;
 }
 
@@ -102,6 +102,7 @@
 }
 
 .chat-messages::-webkit-scrollbar-thumb:hover {
+    cursor: grabbing;
     background: var(--scrollbar-thumb-hover);
 }
 
@@ -110,13 +111,13 @@
     background-color: var(--scrollbar-track);
     display: block;
     border-style: solid;
-    height: 16px;
-    width: 16px;
+    height: 8px;
+    width: 8px;
 }
 
-/* Up arrow */
 .chat-messages::-webkit-scrollbar-button:single-button:vertical:decrement {
-    border-width: 0 8px 8px 8px;
+    border-radius: 4px 4px 0 0;
+    border-width: 0px 4px 5px 4px;
     border-color: transparent transparent var(--scrollbar-thumb) transparent;
 }
 
@@ -124,15 +125,16 @@
     border-color: transparent transparent var(--scrollbar-thumb-hover) transparent;
 }
 
-/* Down arrow */
 .chat-messages::-webkit-scrollbar-button:single-button:vertical:increment {
-    border-width: 8px 8px 0 8px;
+    border-radius: 0 0 4px 4px;
+    border-width: 5px 4px 0px 4px;
     border-color: var(--scrollbar-thumb) transparent transparent transparent;
 }
 
 .chat-messages::-webkit-scrollbar-button:single-button:vertical:increment:hover {
     border-color: var(--scrollbar-thumb-hover) transparent transparent transparent;
 }
+
 
 
 .message {
@@ -179,7 +181,7 @@
     color: var(--text-color);
 }
 
-.chat-input input::placeholder {
+.chat-input input::placeholder {    
     color: var(--text-muted);
 }
 

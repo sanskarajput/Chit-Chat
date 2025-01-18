@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/css/auth.css">
+
+<div class="auth-container">
+    <div class="toggle-switch">
+        <span>Sign In</span>
+        <span>Sign Up</span>
+    </div>
+
+    {% include "./log-in.html" %}
+    {% include "./sign-up.html" %}
+
+</div>
+
+<script>
+    const title = "{{ title }}"
+
+</script>
+
+<script src="/static/js/auth.js"></script>
+{% endblock content %}

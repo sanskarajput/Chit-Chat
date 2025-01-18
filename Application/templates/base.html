@@ -12,19 +12,23 @@
 
 <body>
     <button class="theme-toggle">
-        <i class="fas fa-moon"></i>
+        <i class="fa-solid fa-moon"></i>
     </button>
 
     {% include "layout/navbar.html" %}
     
     
     <div class="container">
-        {% include "layout/left-menu.html" %}
+        {% comment %} {% if request.user.is_authenticated %} {% endcomment %}
+            {% include "layout/left-menu.html" %}
+        {% comment %} {% endif %} {% endcomment %}
 
         {% block content %}
         {% endblock content %}
                 
-        {% include "layout/right-panel.html" %}
+        {% comment %} {% if request.user.is_authenticated %} {% endcomment %}
+            {% include "layout/right-panel.html" %}
+        {% comment %} {% endif %} {% endcomment %}
     </div>
     
     {% include "layout/footer.html" %}

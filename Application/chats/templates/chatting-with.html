@@ -1,0 +1,70 @@
+{% extends "main-content.html" %}
+
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/static/css/emojionearea.min.css">
+<script src="/static/js/emojionearea.min.js"></script>
+<link rel="stylesheet" href="static/css/chat-box.css">
+
+
+<main class="main-content">
+    <div class="chat-container">
+        <!-- Header -->
+        <div class="chat-header">
+            <div class="user-profile">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Profile" class="avatar">
+                <div class="user-info">
+                    <h3>John Doe</h3>
+                    <span class="status online">Online</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="search-btn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <button class="menu-btn">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Messages -->
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will be dynamically added here -->
+        </div>
+
+        <!-- Chat Input -->
+        <div class="chat-input">
+            <button class="attach-btn">
+                <i class="fas fa-paperclip"></i>
+            </button>
+            <input type="text" id="messageInput" placeholder="Type a message....">
+            <button class="send-btn" id="sendBtn">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</main>
+
+<script>
+    const other_user_id = {{ other_user.id }};
+    const current_user_id = {{ request.user.id }};
+
+    // $(document).ready(function() {
+    //     $("#messageInput").emojioneArea({
+    //         pickerPosition: "top",
+    //         autoFocus: true,
+    //         autocomplete: true,
+    //         inline:true,
+    //         tones: true,
+    //         showTab: true,
+    //         search:true,
+    //         hidePickerOnBlur: true,
+    //         recentEmojis: true
+    //     })
+    // });
+    
+</script>
+<script src="/static/js/webSocket.js"></script>
+
+{% endblock content %}
