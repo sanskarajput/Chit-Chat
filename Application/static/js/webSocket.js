@@ -1,4 +1,6 @@
 const socket = new WebSocket(`ws://${window.location.host}/ws/conversation/${current_user_id}/${other_user_id}`);
+console.log(socket);
+
 
 const allMessages = [];
 

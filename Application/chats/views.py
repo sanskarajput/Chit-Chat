@@ -56,7 +56,7 @@ def chatting_with(request, username):
         user = model_to_dict(user) # Serialize the user object to JSON
 
         messages.success(request,f"Chatting with {user['first_name']}")
-        return render(request, 'chatting-with.html',{'title': f'Chatting with {user['first_name']}', 'users': all_users(), 'other_user':user, 'details': details(request.user)})
+        return render(request, 'chatting-with.html',{'title': f"Chatting with {user['first_name']}", 'users': all_users(), 'other_user':user, 'details': details(request.user)})
     except User.DoesNotExist:
         return redirect('does-not-exist',username = username)
     
