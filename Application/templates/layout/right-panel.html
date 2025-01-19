@@ -3,22 +3,33 @@
         <h3>Quick Stats</h3>
         <div class="stat">
             <span>Users</span>
-            <span class="stat-value">1,234</span>
+            <span class="stat-value">{{details.total_users}}</span>
         </div>
         <div class="stat">
-            <span>Posts</span>
-            <span class="stat-value">567</span>
+            <span>Your Chats</span>
+            <span class="stat-value">{{details.your_conversations}}</span>
         </div>
         <div class="stat">
-            <span>Views</span>
-            <span class="stat-value">890</span>
+            <span>Unread</span>
+            <span class="stat-value">3</span>
         </div>
     </div>
     
     <div class="widget">
-        <h3>Quick Links</h3>
-        <div class="stat">Documentation</div>
-        <div class="stat">Resources</div>
-        <div class="stat">Help Center</div>
+        <h3>Recent</h3>
+        {% if not details.recentUsers %}
+            <div class="stat">
+                Not available
+            </div>
+        {% else %}
+            {% for user in details.recentUsers %}
+                    <a class="stat" href="{% url 'chatting-with-user' user.username %}">
+                        <span>
+                            <i class="fas fa-user"></i>
+                            {{ user.first_name }}
+                        </span>
+                    </a>
+            {% endfor %}
+        {% endif %}
     </div>
 </aside>

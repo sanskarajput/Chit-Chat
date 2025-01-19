@@ -14,12 +14,13 @@
             <div class="user-profile">
                 <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Profile" class="avatar">
                 <div class="user-info">
-                    <h3>John Doe</h3>
-                    <span class="status online">Online</span>
+                    <h3>{{ other_user.first_name }}</h3>
+                    <span class="status online">{{ other_user.username }}</span>
                 </div>
             </div>
             <div class="header-actions">
-                <button class="search-btn">
+                <input type="text" id="chatfilterInput"  placeholder="Type to filter..." oninput="filterList()">
+                <button class="search-btn" onclick="toggleSearch(this)">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
                 <button class="menu-btn">

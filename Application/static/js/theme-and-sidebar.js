@@ -10,8 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Menu Toggle
     menuToggle.addEventListener('click', () => {
         leftMenu.classList.toggle('active');
-        menuToggle.querySelector('i').classList.toggle('fa-bars');
-        menuToggle.querySelector('i').classList.toggle('fa-times');
+        if (document.innerWidth < 768) {
+            menuToggle.querySelector('i').classList.toggle('fa-times');
+            menuToggle.querySelector('i').classList.toggle('fa-bars');
+        }
     });
   
     // Close menu when clicking outside
@@ -21,8 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
             window.innerWidth < 768) {
             leftMenu.classList.remove('active');
             navLinks.classList.remove('active');
-            menuToggle.querySelector('i').classList.remove('fa-times');
-            menuToggle.querySelector('i').classList.add('fa-bars');
+            if (document.innerWidth < 768) {
+                menuToggle.querySelector('i').classList.add('fa-bars');
+                menuToggle.querySelector('i').classList.remove('fa-times');
+            }
         }
     });
   
@@ -59,8 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.innerWidth >= 768) {
                 leftMenu.classList.remove('active');
                 navLinks.classList.remove('active');
-                menuToggle.querySelector('i').classList.remove('fa-times');
-                menuToggle.querySelector('i').classList.add('fa-bars');
+                if (document.innerWidth <= 768) {
+                    menuToggle.querySelector('i').classList.remove('fa-times');
+                    menuToggle.querySelector('i').classList.add('fa-bars');
+                }
             }
         }, 250);
     });
@@ -101,3 +107,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
+  const chatting_with_element = document.getElementById('chatting-with'); 
+  if (chatting_with_element) {
+    chatting_with_element.scrollIntoView({
+        behavior: 'smooth', // Smooth scrolling
+        block: 'center'
+    });
+  }

@@ -25,6 +25,3 @@ class Message(models.Model):
 
     def __str__(self):
         return f"Message from {self.sender.username} in Conversation {self.conversation.id}"
-    
-    # def __str__(self):
-    #     return f'Message from {self.sender.username} to {self.conversation.user1.username} and {self.conversation.user2.username}'

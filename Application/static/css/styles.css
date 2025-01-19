@@ -8,7 +8,7 @@
     --border-color: #e5e7eb;
     --hover-color: #f3f4f6;
     --nav-gradient: linear-gradient(35deg, #aa0ee8, #8d52f2);
-    --card-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    --card-shadow: 0 4px 12px rgba(0,0,0,0.1);
     --transition: all 0.3s ease;
     --message-sent-bg: var(--primary-color);
     --message-received-bg: var(--hover-color);
@@ -27,8 +27,7 @@
     --border-color: #374151;
     --hover-color: #374151;
     --nav-gradient: linear-gradient(35deg, #984af7, #7d3bf0);
-    /* --nav-gradient: linear-gradient(135deg, #1e40af, #4f46e5); */
-    --card-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    --card-shadow: 0 4px 12px rgba(0,0,0,0.5);
     --message-sent-bg: var(--primary-color);
     --message-received-bg: var(--card-background);
     --scrollbar-track: #2d3748;
@@ -107,13 +106,19 @@ body {
 }
 
 .menu-toggle {
-    display: none;
+    opacity: 0;
     background: transparent;
     border: none;
     color: white;
     font-size: 1.5rem;
     cursor: pointer;
     transition: var(--transition);
+    transform: scale(0);
+}
+
+.navbar:hover .nav-brand .menu-toggle {
+    transform: scale(1);
+    opacity: 1;
 }
 
 .nav-links {
@@ -150,7 +155,6 @@ body {
 .container {
     display: flex;
     margin-top: 70px;
-    max-height: calc(100vh - 70px);
     gap: 1.5rem;
     padding: 1.5rem;
     position: relative;
@@ -161,11 +165,37 @@ body {
 .left-menu {
     width: 300px;
     background: var(--card-background);
-    padding: 1.5rem;
-    border-radius: 16px 5px 5px 16px;
+    border-radius: 16px 16px 16px 16px;
     box-shadow: var(--card-shadow);
     transition: var(--transition);
+}
+
+.left-menu.active {
+    display: none;
+}
+
+.left-menu .header {
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
+}
+
+.left-menu .hr {
+    padding: 0rem .8rem;
+    margin-top: 0;
+}
+
+.left-menu ul {
+    padding: 0rem .8rem;
     overflow-y: auto;
+    height: calc(100vh - 250px);
+}
+
+.left-menu h2 {
+    text-align: center;
+    color: var(--text-color);
+    background: var(--nav-gradient);
+    margin-bottom: 5px;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .left-menu input {
@@ -177,39 +207,38 @@ body {
     background-color: var(--background-color);
     color: var(--text-color);
     border-radius: 4px;
-    border: .1rem solid transparent;
-    box-shadow: var(--card-shadow);
+    border: .1rem solid rgb(82, 82, 82);
+    box-shadow: var(--card-shadow),var(--card-shadow);
 }
 
 .left-menu input:focus{
-    margin: 0rem;
-    border: .1rem solid var(--border-color);
+    border: .1rem solid rgb(152, 178, 251);
 }
 
 /* Custom Scrollbar */
 
-.left-menu::-webkit-scrollbar {
+.left-menu ul::-webkit-scrollbar {
     width: 8px;
     transition: width 0.3s ease;
 }
 
-.left-menu::-webkit-scrollbar-track {
+.left-menu ul::-webkit-scrollbar-track {
     background: var(--scrollbar-track);
 }
 
-.left-menu::-webkit-scrollbar-thumb {
+.left-menu ul::-webkit-scrollbar-thumb {
     background: var(--scrollbar-thumb);
     border-radius: 4px;
     position: relative;
 }
 
-.left-menu::-webkit-scrollbar-thumb:hover {
+.left-menu ul::-webkit-scrollbar-thumb:hover {
     cursor: grabbing;
     background: var(--scrollbar-thumb-hover);
 }
 
 /* Scrollbar Arrows */
-.left-menu::-webkit-scrollbar-button:single-button {
+.left-menu ul::-webkit-scrollbar-button:single-button {
     background-color: var(--scrollbar-track);
     display: block;
     border-style: solid;
@@ -217,23 +246,23 @@ body {
     width: 8px;
 }
 
-.left-menu::-webkit-scrollbar-button:single-button:vertical:decrement {
+.left-menu ul::-webkit-scrollbar-button:single-button:vertical:decrement {
     border-radius: 4px 4px 0 0;
     border-width: 0px 4px 5px 4px;
     border-color: transparent transparent var(--scrollbar-thumb) transparent;
 }
 
-.left-menu::-webkit-scrollbar-button:single-button:vertical:decrement:hover {
+.left-menu ul::-webkit-scrollbar-button:single-button:vertical:decrement:hover {
     border-color: transparent transparent var(--scrollbar-thumb-hover) transparent;
 }
 
-.left-menu::-webkit-scrollbar-button:single-button:vertical:increment {
+.left-menu ul::-webkit-scrollbar-button:single-button:vertical:increment {
     border-radius: 0 0 4px 4px;
     border-width: 5px 4px 0px 4px;
     border-color: var(--scrollbar-thumb) transparent transparent transparent;
 }
 
-.left-menu::-webkit-scrollbar-button:single-button:vertical:increment:hover {
+.left-menu ul::-webkit-scrollbar-button:single-button:vertical:increment:hover {
     border-color: var(--scrollbar-thumb-hover) transparent transparent transparent;
 }
 
@@ -258,12 +287,24 @@ body {
     border-radius: 8px;
     transition: var(--transition);
     margin-bottom: 0.5rem;
+    border-right: .1px solid transparent;
+    border-bottom: .1px solid transparent;
 }
 
 .left-menu a:hover {
-    background: var(--hover-color);
     color: var(--primary-color);
     transform: translateX(5px);
+    border-right: .1px solid var(--primary-color);
+    border-bottom: .1px solid var(--primary-color);
+    background: var(--hover-color);
+}
+
+#chatting-with{
+    background: var(--hover-color);
+    color: var(--primary-color);
+    transform: translateX(1px);
+    border-right: .1px solid var(--primary-color);
+    border-bottom: .1px solid var(--primary-color);
 }
 
 /* Main Content */
@@ -271,9 +312,9 @@ body {
     flex: 1;
     background: var(--card-background);
     border-radius: 16px;
-    /* padding: 1rem; */
     box-shadow: var(--card-shadow);
     transition: var(--transition);
+    height: calc(100vh - 115px);
 }
 
 .main-content h1 {
@@ -309,6 +350,8 @@ body {
     border-radius: 16px;
     box-shadow: var(--card-shadow);
     transition: var(--transition);
+    display: flex;
+    flex-direction: column;
 }
 
 .widget {
@@ -336,6 +379,11 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    text-decoration: none;
+}
+
+.stat span i {
+    margin-right: 15px;
 }
 
 .stat:last-child {
@@ -387,8 +435,11 @@ body {
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-    .right-panel {
+    .left-menu {
         width: 280px;
+    }
+    .right-panel {
+        width: 260px;
     }
     
     .container {
@@ -397,6 +448,12 @@ body {
 }
 
 @media (max-width: 992px) {
+    .left-menu {
+        width: 200px;
+    }
+    .right-panel {
+        width: 200px;
+    }
     .container {
         gap: 1rem;
     }
@@ -411,7 +468,6 @@ body {
         display: block;
     }
 
-
     .left-menu {
         position: fixed;
         left: -280px;
@@ -423,11 +479,24 @@ body {
     }
 
     .left-menu.active {
+        display: block;
         left: 0;
     }
 
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+
     .right-panel {
-        display: none;
+        flex-direction: row;
+        width: 100%;
+        display:flex;
+        justify-content: space-evenly;
+    }
+
+    .widget {
+        width: 48%;
     }
 
     .container {
@@ -443,6 +512,14 @@ body {
         text-align: center;
         gap: 1.5rem;
     }
+
+    .footer-links {
+        margin: auto;
+    }
+
+    .rights {
+        margin: auto;
+    }   
 }
 
 @media (max-width: 480px) {

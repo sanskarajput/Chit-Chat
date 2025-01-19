@@ -66,7 +66,7 @@ function renderMessages() {
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('message', message.sender === current_user_id ? 'sent' : 'received');
 
-        const messageContent = document.createElement('div');
+        const messageContent = document.createElement('span');
         messageContent.innerHTML = message.text;
 
         const timeSpan = document.createElement('div');
@@ -103,4 +103,37 @@ function timeAgo(timestamp) {
             ? "yesterday"
             : new Date(timestamp).toLocaleDateString(); // Returns date for older timestamps
     }
+}
+
+
+function toggleSearch(event) {
+    
+    event.children[0].classList.toggle("fa-xmark")    
+    const input = document.getElementById('chatfilterInput');
+    if (input.style.display === 'none' || input.style.display === '') {
+        input.style.display = 'block'; // Show the input box
+        input.focus(); // Automatically focus on the input box
+    } else {
+        input.style.display = 'none'; // Hide the input box
+        input.value = ''; // Clear the input box
+        filterList(); // Reset the list highlighting
+    }
+}
+
+// Function to filter and highlight list items
+function filterList() {
+    console.log('pp');
+    
+    const input = document.getElementById('chatfilterInput').value.toLowerCase();
+    const items = document.querySelectorAll('#chatMessages span');   
+
+    items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (input && text.includes(input)) {
+            const regex = new RegExp(`(${input})`, 'gi');
+            item.innerHTML = item.textContent.replace(regex, '<span class="highlight">$1</span>');
+        } else {
+            item.innerHTML = item.textContent; // Reset if no match or input is empty
+        }
+    });
 }

@@ -13,6 +13,11 @@
             <label for="loginPassword" >Password</label>
             <input type="password" id="loginPassword" name="password" required placeholder="Enter your password">
         </div>
-        <button type="submit" class="submit-btn">Sign In</button>
+        <div class="btn" style="padding-top: 10px;">
+            <button type="submit" class="submit-btn">Sign In</button>
+            <p>Don't have an Account ? 
+                <button onclick="document.querySelector('.toggle-switch').querySelectorAll('span')[1].click()">sign up</button>
+            </p>
+        </div>
     </form>
 </div>

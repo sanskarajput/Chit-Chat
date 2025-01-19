@@ -2,16 +2,22 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from chats.views import all_users, details
 
 
 def index(request):
     return render(request, 'index.html', {'title': 'Hello, world!'})
 
+def my_admin_login(request):
+    if request.user.is_authenticated:
+        logout(request)
+    return redirect('/admin')
+
 def auth(request):
     if request.user.is_authenticated:
         return redirect('start-conversation')
     form_type = request.session.pop('form_type', "Sign Up")  # Retrieve and remove it from session
-    return render(request, 'auth/auth.html', {'title': form_type})
+    return render(request, 'auth/auth.html', {'title': form_type, 'users': all_users(), 'details': details(request.user) })
 
 def sign_up(request):
     if request.user.is_authenticated:

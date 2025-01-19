@@ -1,20 +1,31 @@
 <aside class="left-menu">
-    <input type="text" name="filter" id="filter" placeholder="Search a user">
+    <div class="header">
+        <h2>All Users</h2>
+        <input type="text" name="filter" id="filter" placeholder="Search a user">
+    </div>
+    <div class="hr">
+        <hr>
+        <!-- {{request.get_full_path}} -->
+        <!-- {{request.GET}} -->
+        <!-- {{request.resolver_match.kwargs}} -->
+    </div>
     <ul>
         {% for user in users  %}
-            <li>
-                <a href="{% url 'chatting-with-user' user.username %}">
-                    <i class="fas fa-user"></i>
-                    <span>
-                        {% if user.id == request.user.id %}
-                            You ({{ user.first_name }})
-                        {% else %}
-                            {{ user.username }}
-                        {% endif %}
-                    </span>
-                </a>
+        <li>
+            {% if not forloop.first %}
                 <hr>
-            </li>
+            {% endif %}
+            <a href="{% url 'chatting-with-user' user.username %}" {% if request.resolver_match.kwargs.username == user.username %}id="chatting-with" {% endif %}>
+                <i class="fas fa-user"></i>
+                <span>
+                    {% if user.id == request.user.id %}
+                        Me ({{ user.first_name }})
+                    {% else %}
+                        {{ user.username }}
+                    {% endif %}
+                </span>
+            </a>
+        </li>    
         {% endfor %}
     </ul>
 </aside>

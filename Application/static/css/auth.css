@@ -1,10 +1,25 @@
 .auth-container {
     background-color: var(--card-background);
-    padding: 40px;
-    border-radius: 24px;
+    border-radius: 16px;
     box-shadow: var(--card-shadow);
     width: 100%;
-    max-width: 440px;
+    height: 100%;
+    padding: 10px;
+    overflow: auto;   
+    /* overflow: hidden; */
+}
+
+.auth-container::-webkit-scrollbar {
+    display: none; 
+}
+
+.auth-box {
+    background-color: var(--card-background);
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+    width: 90%;
+    margin: 0rem auto 0rem auto;
+    padding: 18px 50px;
 }
 
 .toggle-switch {
@@ -12,14 +27,14 @@
     background-color: var(--hover-color);
     padding: 4px;
     border-radius: 12px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     position: relative;
     cursor: pointer;
 }
 
 .toggle-switch span {
     flex: 1;
-    padding: 12px;
+    padding: 8px;
     text-align: center;
     font-weight: 500;
     z-index: 1;
@@ -61,13 +76,12 @@
 
 .form-header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 .form-header h2 {
     color: var(--text-color);
-    font-size: 28px;
-    margin-bottom: 10px;
+    font-size: 2.5vw;
     background: var(--nav-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -78,21 +92,32 @@
     font-size: 16px;
 }
 
+.form-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.form-row .form-group {
+    width: 48%;
+}
+
 .form-group {
-    margin-bottom: 24px;
+    margin-bottom: 14px;
     position: relative;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
     color: var(--text-color);
     font-weight: 500;
+    font-size: large;
 }
 
 .form-group input {
     width: 100%;
-    padding: 14px;
+    padding: 10px;
     border: 2px solid var(--border-color);
     border-radius: 12px;
     background-color: var(--background-color);
@@ -107,9 +132,19 @@
     box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
 }
 
-.submit-btn {
+.btn {
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    padding: 14px;
+    align-items: center;
+    color: white;
+    margin-top: 15px;
+}
+
+.btn .submit-btn {
+    width: 40%;
+    margin: auto;
+    padding: 10px;
     background: var(--nav-gradient);
     color: white;
     border: none;
@@ -117,8 +152,25 @@
     cursor: pointer;
     font-size: 16px;
     font-weight: 600;
-    margin-top: 20px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn p {
+    padding-top: .5rem;
+    font-size: 12px;
+    color: var(--text-color);
+}
+
+.btn p button {
+    color: var(--text-color);
+    background-color: transparent;
+    border: none;
+    text-decoration: underline;
+}
+
+.btn p button:hover {
+    color: rgb(77, 83, 251);
+    cursor: pointer;
 }
 
 .submit-btn:hover {
@@ -130,9 +182,30 @@
     transform: translateY(0);
 }
 
+@media (max-width: 910px) {
+    .form-row {
+        flex-direction: column;
+    }
+    .form-header h2 {
+        font-size: 3vw;
+    }
+    .form-row .form-group {
+        width: 100%;
+    }
+}
+
 @media (max-width: 480px) {
     .auth-container {
-        padding: 24px;
+        padding: 10px;
+    }
+    .form-header h2 {
+        font-size: 6vw;
+    }
+    .form-row {
+        flex-direction: column;
+    }
+    .form-row .form-group {
+        width: 100%;
     }
 }
 

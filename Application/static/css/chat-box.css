@@ -59,8 +59,31 @@
     gap: 1.2rem;
 }
 
+.header-actions #chatfilterInput {
+    width: 100%;
+    padding: 0.5rem ;
+    border: none;
+    outline: none;
+    font-size: .8rem;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border-radius: 4px;
+    border: .1rem solid rgb(82, 82, 82);
+    box-shadow: var(--card-shadow),var(--card-shadow);
+    display: none;
+}
+
+.header-actions #chatfilterInput:focus{
+    border: .1rem solid rgb(152, 178, 251);
+}
+
+.highlight {
+    background-color: yellow;
+    color: black;
+}
+
 .header-actions button {
-    font-size: 14px;
+    font-size: 22px;
     color: white;
     opacity: 0.8;
     transition: var(--transition);
@@ -179,10 +202,16 @@
     font-size: 1rem;
     background-color: var(--background-color);
     color: var(--text-color);
+    box-shadow: var(--card-shadow);
 }
 
 .chat-input input::placeholder {    
     color: var(--text-muted);
+}
+
+.chat-input input:focus {    
+    border: 1px solid var(--primary-color);
+    box-shadow: var(--card-shadow),var(--card-shadow);
 }
 
 .chat-input button {
