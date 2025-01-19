@@ -1,0 +1,19 @@
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert" id="alertBox">
+        <strong></strong> {{message}}
+        <button class="close-btn" onclick="dismissAlert()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    {% endfor %}
+{% endif %}
+<script>
+    function dismissAlert() {
+        var alertBox = document.getElementById('alertBox');
+        alertBox.classList.add('dismiss');
+
+        // Remove the element after animation completes
+        setTimeout(() => {
+            alertBox.style.display = 'none';
+        }, 500);
+    }
+</script>

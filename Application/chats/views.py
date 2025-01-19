@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.forms.models import model_to_dict
 from .models import Conversation, Message
 from django.db.models import Q
+from django.contrib import messages
+
 
 
 
@@ -42,6 +44,7 @@ def start_conversation(request):
         request.session['form_type'] = 'Sign In'
         return redirect('auth')
     users = User.objects.all().defer('password')
+    messages.success(request,"Start Chatting with your friends !")
     return render(request, 'start-conversation.html',{'title': 'Start Conversation', 'users': users, 'details': details(request.user)})
 
 def chatting_with(request, username):
@@ -52,6 +55,7 @@ def chatting_with(request, username):
         user = User.objects.get(username=username)
         user = model_to_dict(user) # Serialize the user object to JSON
 
+        messages.success(request,f"Chatting with {user['first_name']}")
         return render(request, 'chatting-with.html',{'title': f'Chatting with {user['first_name']}', 'users': all_users(), 'other_user':user, 'details': details(request.user)})
     except User.DoesNotExist:
         return redirect('does-not-exist',username = username)
@@ -60,4 +64,5 @@ def does_not_exist(request,username):
     if not request.user.is_authenticated:
         request.session['form_type'] = 'Sign In'
         return redirect('auth')
+    messages.error(request,f"User '{username}' does not exist!")
     return render(request, 'does-not-exist.html', {'title': 'User Not Found', 'users': all_users(), 'details': details(request.user)})

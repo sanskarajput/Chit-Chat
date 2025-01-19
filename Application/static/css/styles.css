@@ -151,6 +151,61 @@ body {
     width: 80%;
 }
 
+.alert {
+    padding: 15px;
+    background-color: #eab8ff;
+    color: #893488;
+    border: 1px solid #f998ea;
+    border-radius: 5px;
+    position: fixed;
+    font-family: Arial, sans-serif;
+    width: 350px;
+    left: 10px;
+    bottom: 10px;
+    z-index: 1000;
+    
+    /* Add animations */
+    animation: slideIn 0.5s ease-out;
+    transition: all 0.5s ease-out;
+    transform-origin: bottom;
+  }
+
+  /* Slide in animation */
+  @keyframes slideIn {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* Class for dismissing animation */
+  .alert.dismiss {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  /* Style for the close button */
+  .alert .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    color: #c527ba;
+    transition: all 0.3s ease;
+  }
+
+  .alert .close-btn:hover {
+    color: #680c5c;
+    transform: rotate(90deg);
+  }
+
 /* Container */
 .container {
     display: flex;

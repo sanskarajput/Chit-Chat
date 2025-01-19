@@ -9,8 +9,8 @@ Before you begin, ensure you have the following installed:
 
 1. Clone the repository
 ```bash
-git clone https://github.com/sanskarajput/Web-Chat.git
-cd Web-Chat
+git clone https://github.com/sanskarajput/Chit-Chat.git
+cd Chit-Chat
 ```
 
 2. Create and activate a virtual environment
@@ -56,6 +56,7 @@ DATABASE_URL=your-database-url
 
 2. Apply database migrations
 ```bash
+python manage.py makemigrations
 python manage.py migrate
 ```
 
