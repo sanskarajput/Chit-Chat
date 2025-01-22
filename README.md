@@ -78,6 +78,7 @@ python manage.py runserver
 ## AWS Lambda Functions
 </div>
 
+#### To use the Lambda Functions [here](https://sanskarajput.github.io/Chit-Chat/)
 
 
 <div align="center">
