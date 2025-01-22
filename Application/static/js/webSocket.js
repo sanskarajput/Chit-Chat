@@ -123,9 +123,7 @@ function toggleSearch(event) {
 }
 
 // Function to filter and highlight list items
-function filterList() {
-    console.log('pp');
-    
+function filterList() {    
     const input = document.getElementById('chatfilterInput').value.toLowerCase();
     const items = document.querySelectorAll('#chatMessages span');   
 

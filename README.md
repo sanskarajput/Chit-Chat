@@ -1,7 +1,13 @@
-# Django Project Setup Guide
+#### To use the app click [here](http://43.204.215.250:8000/)
+
+
+<div align="center">
+
+## Chit Chat Website Setup Guide
+</div>
 
 Before you begin, ensure you have the following installed:
-- Python 3.8 or higher
+- Python 3.10
 - pip (Python package manager)
 - virtualenv or venv (recommended)
 
@@ -34,40 +40,47 @@ pip install -r requirements.txt
 cd Application
 ```
 
-5. Run the server
-```bash
-python manage.py runserver
-```
-
-
-6. Access the project:
-- Main site: http://localhost:8000
-- Admin interface: http://localhost:8000/admin
-
-
-## Configuration
-
-1. Create a `.env` file in the project root directory:
-```
-DEBUG=True
-SECRET_KEY=your-secret-key
-DATABASE_URL=your-database-url
-```
-
-2. Apply database migrations
+5. Prepares migration files if applicable
 ```bash
 python manage.py makemigrations
+```
+
+6. Applies the prepared migrations to the database.
+```bash
 python manage.py migrate
 ```
 
-3. Create a superuser
+7. Create a superuser
 ```bash
 python manage.py createsuperuser
+#- Enter username
+#- Enter Email Address
+#- Enter Password
+#- Enter Confirm Password
 ```
 
-## Running the Server
-
-1. Start the development server
+8. Run the server
 ```bash
 python manage.py runserver
 ```
+
+
+## Access the project :
+
+* Main site: http://localhost:8000
+* Admin interface: http://localhost:8000/admin
+
+
+---
+
+<div align="center">
+
+## AWS Lambda Functions
+</div>
+
+
+
+<div align="center">
+Thank you :heart:
+</div>
+

@@ -2,10 +2,10 @@
 
 {% block content %}
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="/static/css/emojionearea.min.css">
-<script src="/static/js/emojionearea.min.js"></script>
-<link rel="stylesheet" href="static/css/chat-box.css">
-
+<script type="module">
+    import 'https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js'
+    </script>
+    <link rel="stylesheet" href="/static/css/chat-box.css">
 
 <main class="main-content">
     <div class="chat-container">
@@ -36,8 +36,11 @@
 
         <!-- Chat Input -->
         <div class="chat-input">
-            <button class="attach-btn">
-                <i class="fas fa-paperclip"></i>
+            <div id="picker-container" class="picker-container-class">
+                <emoji-picker></emoji-picker>
+            </div>
+            <button class="attach-btn" id="emoji-button">
+                <i class="fa-solid fa-face-smile"></i>
             </button>
             <input type="text" id="messageInput" placeholder="Type a message....">
             <button class="send-btn" id="sendBtn">
@@ -51,20 +54,47 @@
     const other_user_id = {{ other_user.id }};
     const current_user_id = {{ request.user.id }};
 
-    // $(document).ready(function() {
-    //     $("#messageInput").emojioneArea({
-    //         pickerPosition: "top",
-    //         autoFocus: true,
-    //         autocomplete: true,
-    //         inline:true,
-    //         tones: true,
-    //         showTab: true,
-    //         search:true,
-    //         hidePickerOnBlur: true,
-    //         recentEmojis: true
-    //     })
-    // });
-    
+    const button = document.getElementById('emoji-button');
+    const input = document.getElementById('messageInput');
+    const pickerContainer = document.getElementById('picker-container');
+    const picker = document.querySelector('emoji-picker');
+    // on page load focus on input
+    input.focus();
+
+    // Toggle picker visibility when button is clicked
+    button.addEventListener('click', () => {
+        // console.log(pickerContainer.children[0]);
+        // console.log(pickerContainer.children[0].shadowRoot.querySelector('section'));
+        // console.log(pickerContainer.children[0].shadowRoot.querySelector('section').querySelector("#tab-0"))
+        pickerContainer.classList.toggle('show-picker');
+        if (button.firstElementChild.classList.contains('fa-face-smile')) {
+            button.firstElementChild.classList.remove('fa-face-smile');
+            button.firstElementChild.classList.add('fa-xmark');
+        } else if (button.firstElementChild.classList.contains('fa-xmark')) {
+            button.firstElementChild.classList.remove('fa-xmark');
+            button.firstElementChild.classList.add('fa-face-smile');
+            input.focus();
+        }
+        // pickerContainer.children[0].shadowRoot.querySelector('section').style.borderRadius="20px";
+        pickerContainer.children[0].shadowRoot.querySelector('style').textContent+="::-webkit-scrollbar {display:none}";        
+    });
+
+    // Handle emoji selection
+    picker.addEventListener('emoji-click', event => {
+        input.value += event.detail.unicode;
+        input.focus();
+    });
+
+    // Close picker when clicking outside
+    document.addEventListener('click', (event) => {       
+        if (pickerContainer.classList.contains('show-picker') && button !== event.target && !button.contains(event.target) && !picker.contains(event.target)) {
+            pickerContainer.classList.remove('show-picker');
+            button.firstElementChild.classList.add('fa-face-smile');
+            button.firstElementChild.classList.remove('fa-xmark');
+            input.focus();
+        }
+    });
+   
 </script>
 <script src="/static/js/webSocket.js"></script>
 

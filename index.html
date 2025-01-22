@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload & Calculator</title>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --hover-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            --success-gradient: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+            --success-hover-gradient: linear-gradient(135deg, #059669 0%, #047857 100%);
+            --success-color: #22c55e;
+            --error-color: #ef4444;
+            --text-color: #1f2937;
+            --secondary-text: #6b7280;
+            --border-color: #e5e7eb;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.75rem;
+            color: var(--text-color);
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+        .upload-area.dragover {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .upload-area.success {
+            border-color: var(--success-color);
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .upload-icon {
+            margin-bottom: 1rem;
+            color: #6366f1;
+        }
+
+        .upload-text {
+            color: var(--secondary-text);
+            margin-bottom: 1rem;
+        }
+
+        .upload-button {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: var(--primary-gradient);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-button:hover {
+            background: var(--hover-gradient);
+            transform: translateY(-1px);
+        }
+
+        .selected-file {
+            margin-top: 1rem;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f9fafb;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .file-name {
+            color: var(--text-color);
+            font-size: 0.875rem;
+        }
+
+        .remove-file {
+            background: none;
+            border: none;
+            color: var(--secondary-text);
+            cursor: pointer;
+            font-size: 1.25rem;
+            padding: 0 0.5rem;
+        }
+
+        .remove-file:hover {
+            color: var(--error-color);
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover:not(:disabled) {
+            background: var(--hover-gradient);
+            transform: translateY(-1px);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .submit-button.loading .button-text {
+            visibility: hidden;
+        }
+
+        .submit-button.loading .loading-spinner {
+            display: block;
+        }
+
+        .loading-spinner {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        .upload-result {
+            margin-top: 1.5rem;
+        }
+
+        .success-message, .error-message {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .success-message {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success-color);
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error-color);
+        }
+
+        .success-icon, .error-icon {
+            flex-shrink: 0;
+        }
+
+        .result-content {
+            flex-grow: 1;
+        }
+
+        .file-key {
+            font-size: 0.875rem;
+            margin: 0.5rem 0;
+            word-break: break-all;
+        }
+
+        .download-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: #6366f1;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+        .download-link:hover {
+            text-decoration: underline;
+        }
+
+        .upload-another-button {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            background: var(--success-gradient);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .upload-another-button:hover {
+            background: var(--success-hover-gradient);
+            transform: translateY(-1px);
+        }
+
+        .button-icon {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Calculator Styles */
+        .calculator-form {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .input-group label {
+            font-size: 0.875rem;
+            color: var(--text-color);
+        }
+
+        .input-group input {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+        }
+
+        .calculator-result {
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f9fafb;
+            border-radius: 0.5rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 1.5rem;
+            }
+
+            .upload-area {
+                padding: 1.5rem 1rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* New Toggle Buttons Styles */
+        .toggle-container {
+            background: var(--card-bg);
+            padding: 0.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .toggle-buttons {
+            display: flex;
+            gap: 1rem;
+            background: var(--card-bg);
+            padding: 0.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            background:rgb(239, 239, 239);
+        }
+
+        .toggle-button {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: transparent;
+            color: var(--secondary-text);
+        }
+
+        .toggle-button.active {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+        }
+
+        .toggle-button:hover:not(.active) {
+            background: rgba(99, 102, 241, 0.1);
+            color: #6366f1;
+        }
+
+        .toggle-button .icon {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Toggle Buttons -->
+        <div class="toggle-container">
+            <div class="toggle-buttons">
+            <button class="toggle-button active" data-section="upload">
+                <span class="icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                </span>
+                File Uploader
+            </button>
+            <button class="toggle-button" data-section="calculator">
+                <span class="icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                        <line x1="8" y1="9" x2="16" y2="9"></line>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                        <line x1="8" y1="15" x2="16" y2="15"></line>
+                    </svg>
+                </span>
+                Sum Calculator
+            </button>
+        </div>
+        </div>
+
+        <!-- File Upload Section -->
+        <div id="upload-section" class="section active">
+            <div class="card">
+                <h1>Upload Your File</h1>
+                <!-- Previous file upload content remains unchanged -->
+                <div class="upload-area" id="drop-zone">
+                    <div class="upload-content">
+                        <div class="upload-icon">
+                            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                        </div>
+                        <p class="upload-text">Drag and drop your file here or</p>
+                        <label for="file-input" class="upload-button">Choose File</label>
+                        <input type="file" id="file-input" hidden>
+                    </div>
+                    <div class="selected-file" id="selected-file"></div>
+                </div>
+
+                <button id="upload-button" class="submit-button" disabled>
+                    <span class="button-text">Upload File</span>
+                    <div class="loading-spinner"></div>
+                </button>
+
+                <div id="upload-result" class="upload-result"></div>
+                
+                <button id="upload-another" class="upload-another-button" style="display: none;">
+                    <span class="button-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                    </span>
+                    Upload Another File
+                </button>
+            </div>
+        </div>
+
+        <!-- Calculator Section -->
+        <div id="calculator-section" class="section">
+            <div class="card">
+                <h1>Calculator</h1>
+                <form id="calculator-form" class="calculator-form">
+                    <div class="input-group">
+                        <label for="number1">First Number</label>
+                        <input type="number" id="number1" required placeholder="Enter first number">
+                    </div>
+                    <div class="input-group">
+                        <label for="number2">Second Number</label>
+                        <input type="number" id="number2" required placeholder="Enter second number">
+                    </div>
+                    <button type="submit" class="submit-button" id="calculate-button">
+                        <span class="button-text">Calculate Sum</span>
+                        <div class="loading-spinner"></div>
+                    </button>
+                </form>
+                <div id="calculator-result"></div>
+                <button id="reset-calculator" class="submit-button" style="margin-top: 1rem; display: none;">
+                    Reset Calculator
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Previous JavaScript code remains unchanged
+        
+        // Add toggle functionality
+        const toggleButtons = document.querySelectorAll('.toggle-button');
+        const sections = document.querySelectorAll('.section');
+
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetSection = button.dataset.section;
+                
+                // Update buttons
+                toggleButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                button.classList.add('active');
+                
+                // Update sections
+                sections.forEach(section => {
+                    if (section.id === `${targetSection}-section`) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // Previous JavaScript code remains unchanged
+        const lambdaFunctionUrl = "https://l53hfno66obgmftor5rqwlj5ya0tbmdr.lambda-url.ap-south-1.on.aws";
+        const calculatorLambdaUrl = "https://7xxp376kbhnc6mb4e2ah3jhl740tdbph.lambda-url.ap-south-1.on.aws";
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const uploadButton = document.getElementById('upload-button');
+        const selectedFileDiv = document.getElementById('selected-file');
+        const uploadAnotherButton = document.getElementById('upload-another');
+        const calculatorForm = document.getElementById('calculator-form');
+        const calculateButton = document.getElementById('calculate-button');
+        const resetCalculatorButton = document.getElementById('reset-calculator');
+        const calculatorResult = document.getElementById('calculator-result');
+        let selectedFile = null;
+
+        // Calculator Functions
+        async function calculateSum(num1, num2) {
+            const response = await fetch(calculatorLambdaUrl, {
+                method: 'POST',
+                body: JSON.stringify({
+                    num1: num1,
+                    num2: num2
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to calculate sum');
+            }
+
+            return response.json();
+        }
+
+        calculatorForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const num1 = parseFloat(document.getElementById('number1').value);
+            const num2 = parseFloat(document.getElementById('number2').value);
+
+            calculateButton.classList.add('loading');
+            calculateButton.disabled = true;
+
+            try {
+                const result = await calculateSum(num1, num2);                
+                calculatorResult.innerHTML = `
+                    <div class="calculator-result">
+                        Result: ${result.result}
+                    </div>
+                `;
+                resetCalculatorButton.style.display = 'block';
+            } catch (error) {
+                calculatorResult.innerHTML = `
+                    <div class="error-message">
+                        <svg class="error-icon" viewBox="0 0 24 24" width="24" height="24">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <line x1="15" y1="9" x2="9" y2="15" stroke="currentColor" stroke-width="2"/>
+                            <line x1="9" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <p>Failed to calculate sum</p>
+                    </div>
+                `;
+            } finally {
+                calculateButton.classList.remove('loading');
+                calculateButton.disabled = false;
+            }
+        });
+
+        resetCalculatorButton.addEventListener('click', () => {
+            calculatorForm.reset();
+            calculatorResult.innerHTML = '';
+            resetCalculatorButton.style.display = 'none';
+        });
+
+        // File Upload Functions
+        function convertFileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function uploadFile(payload) {
+            const response = await fetch(lambdaFunctionUrl, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+            });
+            
+            removeFile();
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Failed to upload the file');
+            }
+            return response.json();
+        }
+
+        function resetUploadForm() {
+            selectedFile = null;
+            selectedFileDiv.innerHTML = '';
+            fileInput.value = '';
+            uploadButton.disabled = true;
+            uploadAnotherButton.style.display = 'none';
+            dropZone.classList.remove('success');
+            document.getElementById('upload-result').innerHTML = '';
+        }
+
+        function updateUploadResult(data, success = true) {
+            const resultDiv = document.getElementById('upload-result');
+            if (success) {
+                resultDiv.innerHTML = `
+                    <div class="success-message">
+                        <svg class="success-icon" viewBox="0 0 24 24" width="24" height="24">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <polyline points="7 13 10 16 17 9" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                        <div class="result-content">
+                            <p>File uploaded successfully!</p>
+                            <p class="file-key">File Key: ${data.fileKey}</p>
+                            <a href="${data.presignedUrl}" target="_blank" class="download-link">Download File</a>
+                        </div>
+                    </div>
+                `;
+                dropZone.classList.add('success');
+                uploadAnotherButton.style.display = 'flex';
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="error-message">
+                        <svg class="error-icon" viewBox="0 0 24 24" width="24" height="24">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <line x1="15" y1="9" x2="9" y2="15" stroke="currentColor" stroke-width="2"/>
+                            <line x1="9" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <p>${data}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function updateSelectedFile(file) {
+            selectedFile = file;
+            selectedFileDiv.innerHTML = `
+                <div class="file-info">
+                    <span class="file-name">${file.name}</span>
+                    <button class="remove-file" onclick="removeFile()">×</button>
+                </div>
+            `;
+            uploadButton.disabled = false;
+        }
+
+        function removeFile() {
+            selectedFile = null;
+            selectedFileDiv.innerHTML = '';
+            fileInput.value = '';
+            uploadButton.disabled = true;
+        }
+
+        // Drag and drop handlers
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                updateSelectedFile(file);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                updateSelectedFile(file);
+            }
+        });
+
+        uploadButton.addEventListener('click', async () => {
+            if (!selectedFile) return;
+
+            uploadButton.classList.add('loading');
+            uploadButton.disabled = true;
+
+            try {
+                const base64Content = await convertFileToBase64(selectedFile);
+                const payload = {
+                    fileName: selectedFile.name,
+                    fileContent: base64Content,
+                    contentType: selectedFile.type,
+                };
+
+                const data = await uploadFile(payload);
+                updateUploadResult(data);
+            } catch (error) {
+                console.error(error);
+                updateUploadResult(error.message, false);
+            } finally {
+                uploadButton.classList.remove('loading');
+                uploadButton.disabled = false;
+            }
+        });
+
+        uploadAnotherButton.addEventListener('click', resetUploadForm);
+    </script>
+</body>
+</html>

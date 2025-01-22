@@ -42,6 +42,7 @@ def all_users():
 def start_conversation(request):
     if not request.user.is_authenticated:
         request.session['form_type'] = 'Sign In'
+        messages.success(request,"Please Sign In first !")
         return redirect('auth')
     users = User.objects.all().defer('password')
     messages.success(request,"Start Chatting with your friends !")
@@ -50,12 +51,11 @@ def start_conversation(request):
 def chatting_with(request, username):
     if not request.user.is_authenticated:
         request.session['form_type'] = 'Sign In'
+        messages.success(request,"Please Sign In first !")
         return redirect('auth')
     try:
         user = User.objects.get(username=username)
         user = model_to_dict(user) # Serialize the user object to JSON
-
-        messages.success(request,f"Chatting with {user['first_name']}")
         return render(request, 'chatting-with.html',{'title': f"Chatting with {user['first_name']}", 'users': all_users(), 'other_user':user, 'details': details(request.user)})
     except User.DoesNotExist:
         return redirect('does-not-exist',username = username)
@@ -63,6 +63,7 @@ def chatting_with(request, username):
 def does_not_exist(request,username):
     if not request.user.is_authenticated:
         request.session['form_type'] = 'Sign In'
+        messages.success(request,"Please Sign In first !")
         return redirect('auth')
-    messages.error(request,f"User '{username}' does not exist!")
+    messages.error(request,f"User '{username}' does not exist !")
     return render(request, 'does-not-exist.html', {'title': 'User Not Found', 'users': all_users(), 'details': details(request.user)})

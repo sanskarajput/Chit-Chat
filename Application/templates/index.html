@@ -1,5 +1,55 @@
 {% extends "base.html" %}
 
 {% block content %}
-    Index Page
+<link rel="stylesheet" href="/static/css/index.css">
+<main class="main-content">
+<section class="hero">
+    <div class="floating-icons">
+        <i class="floating-icon fa-brands fa-rocketchat"></i>
+        <i class="floating-icon fa-solid fa-comment"></i>
+        <i class="floating-icon fa-regular fa-comment"></i>
+        <i class="floating-icon fa-solid fa-comments"></i>
+        <i class="floating-icon fa-regular fa-comments"></i>
+        <i class="floating-icon fa-solid fa-comment-dots"></i>
+        <i class="floating-icon fa-regular fa-comment-dots"></i>
+        <i class="floating-icon fa-solid fa-message"></i>
+        <i class="floating-icon fa-regular fa-message"></i>
+        <i class="floating-icon fa-solid fa-heart"></i>
+        <i class="floating-icon fa-regular fa-heart"></i>
+        <i class="floating-icon fa-solid fa-shield-heart"></i>
+    </div>
+    <h1>Chat Smarter, Connect Better</h1>
+    <p>Experience the next generation of messaging</p>
+    <div class="cta-buttons">
+        <a href="{% url 'start-conversation' %}" class="btn primary pulse">Get Started</a>
+        <a href="{% url 'sign-up' %}" class="btn secondary">Sign Up</a>
+    </div>
+    <div class="features">
+        <div class="feature-card glow">
+            <div class="feature-icon">
+                <i class="fa-solid fa-message"></i>
+            </div>
+            <h3>Real-time Chat</h3>
+            <p>Instant messaging with zero delay</p>
+        </div>
+        <div class="feature-card glow">
+            <div class="feature-icon">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h3>End-to-End Encryption</h3>
+            <p>Your privacy is our priority</p>
+        </div>
+        <div class="feature-card glow">
+            <div class="feature-icon">
+                <i class="fa-solid fa-circle-half-stroke"></i>
+            </div>
+            <h3>Excellent User Experience</h3>
+            <p>Responsiveness with dark and light theme</p>
+        </div>
+    </div>
+</section>
+
+
+</main>
+
 {% endblock content %}

@@ -20,11 +20,12 @@ from . import views
 
 urlpatterns = [
     path('admin', admin.site.urls),
+    path('', views.index, name='index'),
     path('my-admin-login', views.my_admin_login, name='my-admin-login'),
     path('auth', views.auth, name='auth'),
     path('log-in', views.log_in, name='log-in'),
     path('sign-up', views.sign_up, name='sign-up'),
     path('logout', views.logout_user, name='logout'),
-    path('', include('chats.urls')), # if not authenticated -> index and if authenticated -> start-conversation
+    path('chat-room/', include('chats.urls')), # if not authenticated -> index and if authenticated -> start-conversation
 ]
 

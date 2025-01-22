@@ -3,8 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputBox = document.querySelector('input');
     const leftMenu = document.querySelector('.left-menu');
     const navLinks = document.querySelector('.nav-links');
-    const themeToggle = document.querySelector('.theme-toggle');
-    const body = document.body;
     
   
     // Menu Toggle
@@ -27,31 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 menuToggle.querySelector('i').classList.add('fa-bars');
                 menuToggle.querySelector('i').classList.remove('fa-times');
             }
-        }
-    });
-  
-    // Theme Toggle
-    let isDarkMode = localStorage.getItem('darkMode') === 'true';
-    
-    // Set initial theme
-    if (isDarkMode) {
-        body.setAttribute('data-theme', 'dark');
-        themeToggle.querySelector('i').classList.remove('fa-moon');
-        themeToggle.querySelector('i').classList.add('fa-sun');
-    }
-  
-    themeToggle.addEventListener('click', () => {
-        isDarkMode = !isDarkMode;
-        localStorage.setItem('darkMode', isDarkMode);
-        
-        if (isDarkMode) {
-            body.setAttribute('data-theme', 'dark');
-            themeToggle.querySelector('i').classList.remove('fa-moon');
-            themeToggle.querySelector('i').classList.add('fa-sun');
-        } else {
-            body.removeAttribute('data-theme');
-            themeToggle.querySelector('i').classList.remove('fa-sun');
-            themeToggle.querySelector('i').classList.add('fa-moon');
         }
     });
   

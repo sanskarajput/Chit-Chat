@@ -7,7 +7,7 @@ from django.contrib import messages
 
 
 def index(request):
-    return render(request, 'index.html', {'title': 'Hello, world!'})
+    return render(request, 'index.html', {'title': 'Chit Chat'})
 
 def my_admin_login(request):
     if request.user.is_authenticated:
@@ -30,7 +30,7 @@ def sign_up(request):
         password = request.POST['password']
         # Check if email and username already exist
         if User.objects.filter(email=email).exists() or User.objects.filter(username=username).exists():
-            messages.error(request,"Email or username already exists!")
+            messages.error(request,"Email or username already exists !")
             return redirect('auth')
         # Create user
         created_user = User.objects.create_user(username=username, email=email, password=password, first_name=fullname)

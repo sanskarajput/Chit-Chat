@@ -1,14 +1,14 @@
 {% if messages %}
     {% for message in messages %}
     <div class="alert" id="alertBox">
-        <strong></strong> {{message}}
+        <p> {{message}} </p>
         <button class="close-btn" onclick="dismissAlert()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     {% endfor %}
 {% endif %}
 <script>
     function dismissAlert() {
-        var alertBox = document.getElementById('alertBox');
+        var alertBox = document.getElementById('alertBox');        
         alertBox.classList.add('dismiss');
 
         // Remove the element after animation completes
@@ -16,4 +16,10 @@
             alertBox.style.display = 'none';
         }, 500);
     }
+
+    // Automatically dismiss the alert after 5 seconds
+    {% if messages %}
+        setTimeout(dismissAlert, 5000);
+    {% endif %}
+
 </script>
